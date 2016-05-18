@@ -3,7 +3,19 @@ var models = require('../models');
 // GET /quizzes	
 exports.index = function(req, res, next) {
 	models.Quiz.findAll({where: {question: {$like: "%" + req.query.search + "%"}}}).then(function(quizzes) {
-		res.render('quizzes/index.ejs', {quizzes: quizzes});
+		if(req.params.format === 'json') {
+			var texto_div = JSON.stringify(quizzes).split(',');
+			var texto = '';
+			for(var i in texto_div) {
+				if(texto_div[i].match(/^{/)) {
+					texto += '<br>';
+				}
+				texto += texto_div[i] + '<br>';
+			}
+			res.send(texto);
+		} else {
+			res.render('quizzes/index.ejs', {quizzes: quizzes});
+		}
 	}).catch(function(error) {
 		next(error);
 	});
@@ -13,8 +25,17 @@ exports.index = function(req, res, next) {
 exports.show = function(req, res, next) {
 	models.Quiz.findById(req.params.quizId).then(function(quiz) {
 		if (quiz) {
-			var answer = req.query.answer || '';
-			res.render('quizzes/show', {quiz: quiz, answer: answer});
+			if(req.params.format === 'json') {
+				var texto_div = JSON.stringify(quiz).split(',');
+				var texto = '';
+				for(var i in texto_div) {
+					texto += texto_div[i] + '<br>';
+				}
+				res.send(texto);
+			} else {
+				var answer = req.query.answer || '';
+				res.render('quizzes/show', {quiz: quiz, answer: answer});
+			}
 		} else {
 			throw new Error('No existe ese quiz en la BDD.');
 		}
