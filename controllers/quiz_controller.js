@@ -79,7 +79,7 @@ exports.new = function(req, res, next) {
 	res.render('quizzes/new', {quiz: quiz});
 };
 
-// POST /quiezes/create
+// POST /quizzes/create
 exports.create = function(req, res, next) {
 	var quiz = models.Quiz.build({question: req.body.quiz.question, answer: req.body.quiz.answer});
 
@@ -97,4 +97,34 @@ exports.create = function(req, res, next) {
 		req.flash('error', 'Error al crear un Quiz: ' + error);
 		next(error);
 	}); 
-}
+};
+
+// GET /quizzes/:id/edit
+exports.edit = function(req, res, next) {
+	var quiz = req.quiz;
+	res.render('quizzes/edit', {quiz: quiz});
+};
+
+// PUT /quizzes/:id
+exports.update = function(req, res, next) {
+	req.quiz.question = req.body.quiz.question;
+	req.quiz.answer = req.body.quiz.answer;
+	req.quiz.save({fields: ['question', 'answer']}).then(function(quiz) {
+		req.flash('success', 'Quiz editado con éxito');
+		res.redirect('/quizzes');
+		console.log('\n\nVa bien\n\n');
+	}).catch(Sequelize.ValidationError, function(error) {
+		req.flash('error', 'Errores en el formulario:');
+		console.log('\n\nPrimer error 1\n\n');
+		for(var i in error.errors) {
+			req.flash('error', error.errors[i].value);
+		};
+		console.log('\n\nPrimer error 2\n\n');
+		res.render('quizzes/edit', {quiz: req.quiz});
+		console.log('\n\nPrimer error 3\n\n');
+	}).catch(function(error) {
+		console.log('\n\nSegundo error\n\n');
+		req.flash('error', 'Error al editar el Quiz: ' + error.message);
+		next(error);
+	});
+};
