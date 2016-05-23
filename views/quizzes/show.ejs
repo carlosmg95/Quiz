@@ -3,3 +3,11 @@
 	<input type="text" name="answer" value="<%= answer %>" placeholder="Responda aquí">
 	<input type="submit" value="Comprobar">
 </form>
+<p><a href="/quizzes/<%= quiz.id %>/comments/new"><button>Nuevo comentario</button></a></p>
+
+<p><strong>Comentarios:</strong></p>
+<ul>
+	<% for(var i in quiz.Comments) { %>
+		<li><%= quiz.Comments[i].text %></li>
+	<% } %>
+</ul>
