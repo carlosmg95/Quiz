@@ -18,23 +18,43 @@ exports.load = function(req, res, next, quizId) {
 
 // GET /quizzes	
 exports.index = function(req, res, next) {
-	models.Quiz.findAll({where: {question: {$like: "%" + req.query.search + "%"}}}).then(function(quizzes) {
-		if(req.params.format === 'json') {
-			var texto_div = JSON.stringify(quizzes).split(',');
-			var texto = '';
-			for(var i in texto_div) {
-				if(texto_div[i].match(/^{/)) {
-					texto += '<br>';
+	if(req.query.search) {
+		models.Quiz.findAll({where: {question: {$like: "%" + req.query.search + "%"}}}).then(function(quizzes) {
+			if(req.params.format === 'json') {
+				var texto_div = JSON.stringify(quizzes).split(',');
+				var texto = '';
+				for(var i in texto_div) {
+					if(texto_div[i].match(/^{/)) {
+						texto += '<br>';
+					}
+					texto += texto_div[i] + '<br>';
 				}
-				texto += texto_div[i] + '<br>';
+				res.send(texto);
+			} else {
+				res.render('quizzes/index.ejs', {quizzes: quizzes});
 			}
-			res.send(texto);
-		} else {
-			res.render('quizzes/index.ejs', {quizzes: quizzes});
-		}
-	}).catch(function(error) {
-		next(error);
-	});
+		}).catch(function(error) {
+			next(error);
+		});
+	} else {
+		models.Quiz.findAll().then(function(quizzes) {
+			if(req.params.format === 'json') {
+				var texto_div = JSON.stringify(quizzes).split(',');
+				var texto = '';
+				for(var i in texto_div) {
+					if(texto_div[i].match(/^{/)) {
+						texto += '<br>';
+					}
+					texto += texto_div[i] + '<br>';
+				}
+				res.send(texto);
+			} else {
+				res.render('quizzes/index.ejs', {quizzes: quizzes});
+			}
+		}).catch(function(error) {
+			next(error);
+		});
+	}
 };
 
 // GET /quizzes/:id
@@ -93,7 +113,7 @@ exports.create = function(req, res, next) {
 			req.flash('error', error.errors[i].value);
 		};
 		res.render('quizzes/new', {quiz: quiz});
-	}).catch(function(error) {		// redirección HTTP a lista de preguntas
+	}).catch(function(error) {
 		req.flash('error', 'Error al crear un Quiz: ' + error);
 		next(error);
 	}); 
@@ -112,18 +132,13 @@ exports.update = function(req, res, next) {
 	req.quiz.save({fields: ['question', 'answer']}).then(function(quiz) {
 		req.flash('success', 'Quiz editado con éxito');
 		res.redirect('/quizzes');
-		console.log('\n\nVa bien\n\n');
 	}).catch(Sequelize.ValidationError, function(error) {
 		req.flash('error', 'Errores en el formulario:');
-		console.log('\n\nPrimer error 1\n\n');
 		for(var i in error.errors) {
 			req.flash('error', error.errors[i].value);
 		};
-		console.log('\n\nPrimer error 2\n\n');
 		res.render('quizzes/edit', {quiz: req.quiz});
-		console.log('\n\nPrimer error 3\n\n');
 	}).catch(function(error) {
-		console.log('\n\nSegundo error\n\n');
 		req.flash('error', 'Error al editar el Quiz: ' + error.message);
 		next(error);
 	});
