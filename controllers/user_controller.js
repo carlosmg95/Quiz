@@ -27,21 +27,18 @@ exports.index = function(req, res, next) {
 
 // GET /user/:id
 exports.show = function(req, res, next) {
-	console.log('Show: Name: ' + req.user.username + ' Pass: ' + req.user.password + ' Salt: ' + req.user.salt);
 	res.render('users/show', {user: req.user});
 };
 
 // GET /users/new
 exports.new = function(req, res, next) {	
 	var user = models.User.build({ username: '', password: '' });
-	console.log('New: Name: ' + user.username + ' Pass: ' + user.password + ' Salt: ' + user.salt);
 	res.render('users/new', {user: user});
 };
 
 // POST /users
 exports.create = function(req, res, next) {
 	var user = models.User.build({ username: req.body.user.username, password: req.body.user.password });
-	console.log('Create: Name: ' + user.username + ' Pass: ' + user.password + ' Salt: ' + user.salt);
 
 	// El login debe ser único:
 	models.User.find({ where: { username: req.body.user.username }}).then(function(existing_user) {
@@ -69,13 +66,11 @@ exports.create = function(req, res, next) {
 
 // GET /users/:id/edit
 exports.edit = function(req, res, next) {
-	console.log('Edit: Name: ' + user.username + ' Pass: ' + user.password + ' Salt: ' + user.salt);
 	res.render('users/edit', { user: req.user })
 };
 
 // PUT /users/:id
 exports.update = function(req, res, next) {
-	console.log('Update: Name: ' + user.username + ' Pass: ' + user.password + ' Salt: ' + user.salt);
 	//req.user.username = req.body.user.username;	// NO EDITAR
 	req.user.password = req.body.user.password;
 
@@ -100,7 +95,6 @@ exports.update = function(req, res, next) {
 
 // DELETE /users/:id
 exports.destroy = function(req, res, next)  {
-	console.log('Destroy: Name: ' + req.user.username + ' Pass: ' + req.user.password + ' Salt: ' + req.user.salt);
 	req.user.destroy().then(function() {
 		
 		// Borrando usuario logueado
