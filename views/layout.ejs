@@ -7,6 +7,17 @@
 </head>
 <body>
 	<header>
+		<div class="right">
+			<% if(!session.user) { %>
+				<a href="/users/new">Registrarse</a>
+				<a href="/session">Login</a>
+			<% } else { %>
+				<%= session.user.username %>
+				<a href="/users/<%= session.user.id %>">Perfil</a>
+				<a href="/session?_method=DELETE">Logout</a>
+			<% } %>
+		</div>
+
 		<h2>Quiz: el juego de las preguntas</h2>
 	</header>
 

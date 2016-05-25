@@ -1,9 +1,47 @@
-<label for="preg" class="rem">Username:</label>
-<input type="text" id="username" name="user[username]" value="<%= user.username %>"/><p>
+<script>
+	function confirmPassword() {
+		var pw1 = document.getElementById('user_password').value;
+		var pw2 = document.getElementById('user_confirm_password').value;
 
-<label for="resp" class="rem">Password:</label>
-<input type="password" id="pass" name="user[password]"/> <p>
+		if (!pw1 || !pw2) {
+			alert('Debe rellenar los campos de Password y Confirmación.');
+			return false;
+		}
 
-<a href="/"><button type="button">Cancelar</button></a>
+		if (pw1 === pw2) {
+			return true;
+		} else {
+			alert('Los passwords introducidos no coinciden.');
+			return false;
+		}
+	}
+</script>
 
-<input type="submit" value="Guardar">
+
+<div>
+	<% if ( ! user.id) { %>
+		<label for="preg" class="rem">Username:</label>
+		<input type="text" id="username" name="user[username]" value="<%= user.username %>"/><p>
+	<% } else { %>
+		Username: <%= user.username %>
+	<% } %>
+</div>
+
+<div>
+	<label for="user_password" class="rem">Password:</label>
+	<input type="password" id="user_password" name="user[password]"/> <p>
+</div>
+
+<div>
+	<label for="user_confirm_password" class="rem">Confirmar Password::</label>
+	<input type="password" id="user_confirm_password" /> <p>
+</div>
+
+
+<div>
+	<a href="/"><button type="button">Cancelar</button></a>
+</div>
+
+<div>
+	<input type="submit" value="Guardar" onclick="return confirmPassword()">
+</div>
