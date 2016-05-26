@@ -13,7 +13,13 @@
 
 <p><strong>Comentarios:</strong></p>
 <ul>
-	<% for(var i in quiz.Comments) { %>
-		<li><%= quiz.Comments[i].text %></li>
-	<% } %>
+	<% for(var i in quiz.Comments) {
+		var comment = quiz.Comments[i];
+		if(comment.accepted) { %>
+			<li><%= comment.text %></li>
+		<% } else if(session.user) { %>
+			<li><%= comment.text %></li>
+			<a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>/accept?_method=PUT"><button>Aceptar</button></a>
+		<% } %>
+	<% } %>	
 </ul>
