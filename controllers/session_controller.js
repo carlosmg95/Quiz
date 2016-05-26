@@ -48,3 +48,11 @@ var authenticate = function(login, password) {
 		}
 	});
 };
+
+exports.loginRequired = function(req, res, next) {
+	if(req.session.user) {
+		next();
+	} else {
+		res.redirect('/session/redir=' + (req.param('redir') || req.url));
+	}
+};

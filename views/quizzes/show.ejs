@@ -1,9 +1,15 @@
-<form method="get" action="/quizzes/<%= quiz.id %>/check">
-	Pregunta: <%= quiz.question %><p>
-	<input type="text" name="answer" value="<%= answer %>" placeholder="Responda aquí">
-	<input type="submit" value="Comprobar">
-</form>
-<p><a href="/quizzes/<%= quiz.id %>/comments/new"><button>Nuevo comentario</button></a></p>
+<p>
+	<form method="get" action="/quizzes/<%= quiz.id %>/check">
+		Pregunta: <%= quiz.question %><p>
+		<input type="text" name="answer" value="<%= answer %>" placeholder="Responda aquí">
+		<input type="submit" value="Comprobar">
+	</form>
+</p>
+
+<% if(session.user) { %>
+	<p><a href="/quizzes/<%= quiz.id %>/comments/new"><button>Nuevo comentario</button></a></p>
+<% } %>
+
 
 <p><strong>Comentarios:</strong></p>
 <ul>
