@@ -1,7 +1,16 @@
 <table>
 	<% for (var i in quizzes) { %>
 		<tr>
+			<td>
+				<% if(quizzes[i].Attachment) { %>
+					<img src="<%= quizzes[i].Attachment.url %>" width="50px"/>
+				<% } else { %>
+					<img src="/images/question.png" width="50px"/>
+				<% } %>
+			</td>
+
 			<td><a href="/quizzes/<%= quizzes[i].id %>"><%= quizzes[i].question %></a></td>
+
 			<% if(session.user) { %>
 				<% if(session.user.isAdmin || (session.user.id === quizzes[i].AuthorId)) { %>
 					<td><a href="/quizzes/<%= quizzes[i].id %>/edit"><button>editar</button></a></td>

@@ -49,7 +49,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use(function(req, res, next) {
+app.use(function(req, res, next) {  
   if(req.session.user) {
     var timeout = 120000;
     if((+(new Date()) - req.session.user.inicio) >= timeout ) {
