@@ -21,7 +21,7 @@ exports.create = function(req, res, next) {
 
 	authenticate(login, password).then(function(user) {
 		if(user) {
-			req.session.user = { id: user.id, username: user.username, inicio: +(new Date()) };
+			req.session.user = { id: user.id, username: user.username, inicio: +(new Date()), isAdmin: user.isAdmin };
 			res.redirect(redir);
 		} else {
 			req.flash('error', 'La autenticación ha fallado. Reinténtelo otra vez.');
@@ -54,5 +54,31 @@ exports.loginRequired = function(req, res, next) {
 		next();
 	} else {
 		res.redirect('/session/redir=' + (req.param('redir') || req.url));
+	}
+};
+
+exports.adminOrMyselfRequired = function(req, res, next) {
+	var isAdmin = req.session.user.isAdmin;
+	var userId = req.userId;
+	var loggedUserId = req.session.user.id;
+
+	if(isAdmin || (userId === loggedUserId)) {
+		next();
+	} else {
+		console.log('Ruta prohibida: No es el usuario logueado, ni un administrador.');
+		res.send(403);
+	}
+};
+
+exports.adminAndNotMyselfRequired = function(req, res, next) {
+	var isAdmin = req.session.user.isAdmin;
+	var userId = req.userId;
+	var loggedUserId = req.session.user.id;
+
+	if(isAdmin && (userId !== loggedUserId)) {
+		next();
+	} else {
+		console.log('Ruta prohibida: No es el usuario logueado, ni un administrador.');
+		res.send(403);
 	}
 };
