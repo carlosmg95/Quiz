@@ -75,7 +75,9 @@ exports.show = function(req, res, next) {
 				res.send(texto);
 			} else {
 				var answer = req.query.answer || '';
-				res.render('quizzes/show', {quiz: req.quiz, answer: answer});
+				models.User.findAll({order: ['username']}).then(function(users) {
+					res.render('quizzes/show', { quiz: req.quiz, answer: answer, users: users });
+				});				
 			}
 		} else {
 			throw new Error('No existe ese quiz en la BDD.');

@@ -23,7 +23,13 @@
 	<% for(var i in quiz.Comments) {
 		var comment = quiz.Comments[i];
 		if(comment.accepted) { %>
-			<li><%= comment.text %></li>
+			<li><%= comment.text %>
+				<% for(var u in users) { 
+					if(users[u].id === comment.AuthorId) { %>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Autor: <strong><%= users[u].username %></strong>
+					<% }
+				} %>
+			</li>
 		<% } else if(session.user && (session.user.isAdmin || (quiz.AuthorId === session.user.id))) { %>
 			<li><%= comment.text %></li>
 			<a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>/accept?_method=PUT"><button>Aceptar</button></a>
