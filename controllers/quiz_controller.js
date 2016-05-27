@@ -109,21 +109,24 @@ exports.new = function(req, res, next) {
 // POST /quizzes/create
 exports.create = function(req, res, next) {
 	var authorId = (req.session.user && req.session.user.id) || 0;
-	var quiz = models.Quiz.build({ question: req.body.quiz.question, answer: req.body.quiz.answer, AuthorId: authorId });
-
+	console.log('Answer0: ' + req.body.answer);
+	var quiz = { question: req.body.question, answer: req.body.answer, AuthorId: authorId };
+	console.log('Answer1: ' + quiz.answer);
 	// Guarda en la tabla Quizzes el nuevo quiz
 	models.Quiz.create(quiz).then(function(quiz) {
+		console.log('Answer2: ' + quiz.answer);
 		req.flash('success', 'Quiz creado con éxito');
 
 		if(!req.file) {
 			req.flash('info', 'Es un quiz sin imagen.');
+			return;
 		}
 
 		// Salvar la imagen en Cloudinary
-		return uploadResourceToCloudinary(req).then(function(uploadResult) {
-			// Crear nuevo Attachment en la BBDD
-			return createAttachment(req, uploadResult, quiz);
-		});
+        return uploadResourceToCloudinary(req).then(function(uploadResult) {
+            // Crear nuevo attachment en la BBDD.
+            return createAttachment(req, uploadResult, quiz);
+        });
 
 	}).then(function() {
 		res.redirect('/quizzes');
@@ -147,8 +150,8 @@ exports.edit = function(req, res, next) {
 
 // PUT /quizzes/:id
 exports.update = function(req, res, next) {
-	req.quiz.question = req.body.quiz.question;
-	req.quiz.answer = req.body.quiz.answer;
+	req.quiz.question = req.body.question;
+	req.quiz.answer = req.body.answer;
 
 	req.quiz.save({fields: ['question', 'answer']}).then(function(quiz) {
 		req.flash('success', 'Quiz editado con éxito');
@@ -213,7 +216,7 @@ exports.ownershipRequired = function(req, res, next) {
 /**
  * Crea una promesa para crear un attachment en la tabla Attachments.
  */
-function createAttachment(req, uploadResult, quiz) {
+function createAttachment(req, uploadResult, quiz) {	
     if (!uploadResult) {
         return Promise.resolve();
     }
@@ -286,11 +289,11 @@ function uploadResourceToCloudinary(req) {
                 if (! result.error) {
                     resolve({ public_id: result.public_id, url: result.secure_url });
                 } else {
-                    req.flash('error', 'No se ha podido salvar la nueva imagen: ' + result.error.message);
+                    req.flash('error', 'No se ha podido salvar la nueva imagen: '+result.error.message);
                     resolve(null);
                 }
             },
             cloudinary_image_options
         );
-    });
+    })
 }

@@ -3,7 +3,7 @@
 		Pregunta: <%= quiz.question %><p>
 
 		<% if(quiz.Attachment) { %>
-			<img src="<%= quizzes[i].Attachment.url %>" width="50px"/>
+			<img src="<%= quiz.Attachment.url %>" width="50px"/>
 		<% } else { %>
 			<img src="/images/question.png" width="50px"/>
 		<% } %>
