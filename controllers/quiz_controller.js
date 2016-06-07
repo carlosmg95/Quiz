@@ -24,7 +24,7 @@ exports.load = function(req, res, next, quizId) {
 // GET /quizzes	
 exports.index = function(req, res, next) {
 	if(req.query.search) {
-		models.Quiz.findAll({where: {question: {$like: "%" + req.query.search + "%"}}}).then(function(quizzes) {
+		models.Quiz.findAll({where: {question: {$like: "%" + req.query.search + "%"}}, include: [models.Attachment]}).then(function(quizzes) {
 			if(req.params.format === 'json') {
 				var texto_div = JSON.stringify(quizzes).split(',');
 				var texto = '';

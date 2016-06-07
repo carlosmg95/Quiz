@@ -109,7 +109,7 @@ table.lista {
 
 div.lista {
 	margin: auto;
-	width: 60%;
+	width: 40%;
 }
 
 a.lista {
@@ -146,9 +146,7 @@ div#buscador {
 }
 
 input.caja-formulario {
-	border-style: solid;
-
-	
+	border-style: solid;	
 	border-width: 0.5px;
 	width: 70%;
 }

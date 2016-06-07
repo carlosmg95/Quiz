@@ -52,7 +52,8 @@ router.post('/quizzes/:quizId(\\d+)/comments', 							sessionController.loginReq
 router.put('/quizzes/:quizId(\\d+)/comments/:commentId(\\d+)/accept',	sessionController.loginRequired,
 																		quizController.ownershipRequired,
 																		commentController.accept);
-router.get('/comments',													commentController.listado);
+router.get('/comments',													sessionController.loginRequired,
+																		commentController.listado);
 
 /* Definición de rutas de usuarios */
 router.get('/users',					userController.index);	// Listado de usuarios

@@ -7,6 +7,7 @@
 		<input type="submit" value="Buscar" class="boton-formulario">
 	</form>
 </div>
+
 <div class="lista">
 	<% for (var i in quizzes) { %>
 		<div <% if(session.user) { if(session.user.isAdmin || (session.user.id === quizzes[i].AuthorId)) { %> class="draggable" <%} }%> id="<%= quizzes[i].id %>">
