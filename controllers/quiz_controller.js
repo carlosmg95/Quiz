@@ -103,18 +103,15 @@ exports.check = function(req, res, next) {
 // GET /quizzes/new
 exports.new = function(req, res, next) {
 	var quiz = models.Quiz.build({question: '', answer: ''});
-	res.render('quizzes/new', {quiz: quiz});
+	res.render('quizzes/new', { quiz: quiz });
 };
 
 // POST /quizzes/create
 exports.create = function(req, res, next) {
 	var authorId = (req.session.user && req.session.user.id) || 0;
-	console.log('Answer0: ' + req.body.answer);
 	var quiz = { question: req.body.question, answer: req.body.answer, AuthorId: authorId };
-	console.log('Answer1: ' + quiz.answer);
 	// Guarda en la tabla Quizzes el nuevo quiz
 	models.Quiz.create(quiz).then(function(quiz) {
-		console.log('Answer2: ' + quiz.answer);
 		req.flash('success', 'Quiz creado con éxito');
 
 		if(!req.file) {

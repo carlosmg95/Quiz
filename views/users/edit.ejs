@@ -1,7 +1,9 @@
-<p>Editar usuario:</p>
+<div class="formulario">
+	<h3>Editar usuario:</h3>
 
-<p>
-	<form method="post" action="/users/<%= user.id %>?_method=PUT" >      
-		<% include _form.ejs %>
-	</form>
-</p>
+	<p>
+		<form method="post" action="/users/<%= user.id %>?_method=PUT" >      
+			<% include _form.ejs %>
+		</form>
+	</p>
+</div>

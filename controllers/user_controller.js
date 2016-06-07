@@ -26,8 +26,8 @@ exports.index = function(req, res, next) {
 };
 
 // GET /user/:id
-exports.show = function(req, res, next) {
-	res.render('users/show', {user: req.user});
+exports.show = function(req, res, next) {	
+	res.render('users/show', { user: req.user });
 };
 
 // GET /users/new

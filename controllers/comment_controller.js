@@ -54,3 +54,10 @@ exports.accept = function(req, res, next) {
 		next(error);
 	});
 };
+
+// GET /comments
+exports.listado = function(req, res, next) {
+	models.Comment.findAll().then(function(comments) {
+		res.render('comments', { comments: comments });
+	});
+};

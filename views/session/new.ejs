@@ -1,23 +1,25 @@
-<h2>Login</h2>
+<div class="formulario">
+	<h2>Login</h2>
 
-<form method="POST" action="/session">
-	
-<input type="hidden" name="redir" value="<%= redir %>"/>
+	<form method="POST" action="/session">
+		
+	<input type="hidden" name="redir" value="<%= redir %>"/>
 
-<div>
-	<label for="login">Login:</label>
-	<br/>
-	<input type="text" id="login" name="login" size="30"/>
+	<div>
+		<label for="login">Login:</label>
+		<br/>
+		<input type="text" id="login" name="login" size="30"/>
+	</div>
+
+	<div>
+		<label for="password">Password:</label>
+		<br/>
+		<input type="password" id="password" name="password" size="30"/>
+	</div>
+
+	<div>
+		<input type="submit" name="commit" value="login"/>
+	</div>
+
+	</form>
 </div>
-
-<div>
-	<label for="password">Password:</label>
-	<br/>
-	<input type="password" id="password" name="password" size="30"/>
-</div>
-
-<div>
-	<input type="submit" name="commit" value="login"/>
-</div>
-
-</form>

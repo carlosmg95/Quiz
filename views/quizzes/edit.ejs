@@ -1,6 +1,8 @@
-<p>Edite la pregunta:</p>
-<p>
-	<form method="post" action="/quizzes/<%= quiz.id %>?_method=PUT" enctype="multipart/form-data">
-		<% include _form.ejs %>
-	</form>
-</p>
+<div class="formulario">
+	<h3>Edite la pregunta:</h3>
+	<p>
+		<form method="post" action="/quizzes/<%= quiz.id %>?_method=PUT" enctype="multipart/form-data">
+			<% include _form.ejs %>
+		</form>
+	</p>
+</div>

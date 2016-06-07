@@ -1,17 +1,20 @@
 <h2>Usuario</h2>
 
-<p><b>Username:</b> <%= user.username %></p>
-<p><b>Es administrador:</b> <%= user.isAdmin ? 'Sí' : 'No' %></p>
+<div class="usuario">
+	<p><b>Username:</b> <%= user.username %></p>
+	<p><b>Es administrador:</b> <%= user.isAdmin ? 'Sí' : 'No' %></p>
 
-<% if(session.user) { %>
-	<p>
-		<% if(session.user.isAdmin || (session.user.id === user.id)) { %>
-			<a href="/users/<%= user.id %>/edit"><button type="button"> Editar </button></a>
-		<% } %>
-		<% if(session.user.isAdmin && (session.user.id !== user.id)) { %>
-			<a href="/users/<%= user.id %>?_method=DELETE"><button type="button" onClick="return confirm('Borrar cuenta: <%= user.username %>');">Borrar</button></a>
-		<% } %>
-	</p>
-<% } %>
 
-<a href="/users"><button type="button">Volver</button></a>
+	<% if(session.user) { %>
+		<p>
+			<% if(session.user.isAdmin || (session.user.id === user.id)) { %>
+				<a href="/users/<%= user.id %>/edit"><button type="button" id="editar">Editar</button></a>
+			<% } %>
+			<% if(session.user.isAdmin && (session.user.id !== user.id)) { %>
+				<a href="/users/<%= user.id %>?_method=DELETE"><button type="button" onClick="return confirm('Borrar cuenta: <%= user.username %>');" id="borrar">Borrar</button></a>
+			<% } %>
+		</p>
+	<% } %>
+
+	<a href="/users"><button type="button">Volver</button></a>
+</div>

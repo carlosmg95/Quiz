@@ -1,38 +1,44 @@
-<p>
-	<form method="get" action="/quizzes/<%= quiz.id %>/check">
-		Pregunta: <%= quiz.question %><p>
+<h2>Pregunta</h2>
 
-		<% if(quiz.Attachment) { %>
-			<img src="<%= quiz.Attachment.url %>" width="50px"/>
-		<% } else { %>
-			<img src="/images/question.png" width="50px"/>
-		<% } %>
+<div class="formulario">
+	<p>
+		<form method="get" action="/quizzes/<%= quiz.id %>/check">
+			<h3>Pregunta:<br><%= quiz.question %></h3>
 
-		<input type="text" name="answer" value="<%= answer %>" placeholder="Responda aquí">
-		<input type="submit" value="Comprobar">
-	</form>
-</p>
+			<% if(quiz.Attachment) { %>
+				<img src="<%= quiz.Attachment.url %>" width="50px" class="imagen-pregunta"/>
+			<% } else { %>
+				<img src="/images/question.png" width="50px"/>
+			<% } %>
 
-<% if(session.user) { %>
-	<p><a href="/quizzes/<%= quiz.id %>/comments/new"><button>Nuevo comentario</button></a></p>
-<% } %>
+			<input type="text" name="answer" value="<%= answer %>" placeholder="Responda aquí">
+			<input type="submit" value="Comprobar">
+		</form>
+	</p>
+</div>
 
+<div class="comentarios">
+	<% if(session.user) { %>
+		<p id="nuevo-comentario"><a href="/quizzes/<%= quiz.id %>/comments/new"><button id="nuevo">Nuevo comentario</button></a></p>
+	<% } %>
 
-<p><strong>Comentarios:</strong></p>
-<ul>
-	<% for(var i in quiz.Comments) {
-		var comment = quiz.Comments[i];
-		if(comment.accepted) { %>
-			<li><%= comment.text %>
-				<% for(var u in users) { 
-					if(users[u].id === comment.AuthorId) { %>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Autor: <strong><%= users[u].username %></strong>
-					<% }
-				} %>
-			</li>
-		<% } else if(session.user && (session.user.isAdmin || (quiz.AuthorId === session.user.id))) { %>
-			<li><%= comment.text %></li>
-			<a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>/accept?_method=PUT"><button>Aceptar</button></a>
-		<% } %>
-	<% } %>	
-</ul>
+	<h3><strong>Comentarios:</strong></h3>
+	<table>
+		<% for(var i in quiz.Comments) {
+			var comment = quiz.Comments[i]; %>
+			<tr>
+				<% if(comment.accepted) { %>
+					<td><%= comment.text %></td>
+					<% for(var u in users) { 
+						if(users[u].id === comment.AuthorId) { %>
+							<td>Autor: <strong><%= users[u].username %></strong></td>
+						<% }
+					} %>
+				<% } else if(session.user && (session.user.isAdmin || (quiz.AuthorId === session.user.id))) { %>
+					<td><%= comment.text %></td>
+					<td><a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>/accept?_method=PUT"><button>Aceptar</button></a></td>
+				<% } %>
+			</tr>
+		<% } %>	
+	</table>
+</div>

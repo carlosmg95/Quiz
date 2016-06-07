@@ -6,64 +6,71 @@
 	<link rel='stylesheet' href='/stylesheets/style.css' />	
 </head>
 <body>
-	<header>
-		<div class="right">
-			<% if(!session.user) { %>
-				<a href="/users/new">Registrarse</a>
-				<a href="/session">Login</a>
-			<% } else { %>
-				<%= session.user.username %>
-				<a href="/users/<%= session.user.id %>">Perfil</a>
-				<a href="/session?_method=DELETE">Logout</a>
-			<% } %>
-		</div>
-
-		<h2>Quiz: el juego de las preguntas</h2>
-	</header>
-
 	<nav>
 		<a href="/">Inicio</a>
 		<a href="/quizzes">Preguntas</a>
 		<a href="/author">Autor</a>
 		<a href="/users">Usuarios</a>
-	</nav>
+		<% if(session.user && session.user.isAdmin) { %><a href="/comments">Ver todos los comentarios</a><% } %>
+		<div class="right">
+			<% if(!session.user) { %>
+				<a href="/users/new">Registrarse</a>
+				<a href="/session">Login</a>
+			<% } else { %>
+				<p id="user"><%= session.user.username %></p>
+				<a href="/users/<%= session.user.id %>">Perfil</a>
+				<a href="/session?_method=DELETE">Logout</a>
+			<% } %>
+		</div>
+		<div class="clear"></div>
+	</nav>	
 
-	<section>
+	<header>
+		<h1 id="titulo">Quiz: el juego de las preguntas</h1>			
+	</header>	
+
+	<section id="flash">
 		<% if(messages.info) { %>
 			<article id="flashinfo">
-				<h3>Información de interés:</h3>
-				<ul>
-					<% for(var i in messages.info) { %>
-						<li><%= messages.info[i] %></li>
-					<% } %>
-				</ul>
+				<div>
+					<h3>Información de interés:</h3>
+					<ul>
+						<% for(var i in messages.info) { %>
+							<li><%= messages.info[i] %></li>
+						<% } %>
+					</ul>
+				</div>
 			</article>
 		<% } %>
 
 		<% if(messages.success) { %>
 			<article id="flashsuccess">
-				<h3>Tareas realizadas con éxito:</h3>
-				<ul>
-					<% for(var i in messages.success) { %>
-						<li><%= messages.success[i] %></li>
-					<% } %>
-				</ul>
+				<div>
+					<h3>Tareas realizadas con éxito:</h3>
+					<ul>
+						<% for(var i in messages.success) { %>
+							<li><%= messages.success[i] %></li>
+						<% } %>
+					</ul>
+				</div>
 			</article>
 		<% } %>
 
 		<% if(messages.error) { %>
 			<article id="flasherror">
-				<h3>Errores encontrados:</h3>
-				<ul>
-					<% for(var i in messages.error) { %>
-						<li><%= messages.error[i] %></li>
-					<% } %>
-				</ul>
+				<div>
+					<h3>Errores encontrados:</h3>
+					<ul>
+						<% for(var i in messages.error) { %>
+							<li><%= messages.error[i] %></li>
+						<% } %>
+					</ul>
+				</div>
 			</article>
 		<% } %>
 	</section>
 
-	<section>
+	<section class="main">
 		<div><%- body %></div>
 	</section>
 
