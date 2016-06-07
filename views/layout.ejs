@@ -3,7 +3,23 @@
 <head>
 	<meta charset="utf-8">
 	<title>Quiz</title>
-	<link rel='stylesheet' href='/stylesheets/style.css' />	
+	<script src="/javascripts/jquery-2.1.4.js"></script>
+	<script src="/javascripts/jquery-ui.min.js"></script>
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<script>
+		$(function() {
+			$(".draggable").draggable({
+				revert: true
+			});  
+			$("#soltable").droppable({
+				drop: function( evento, ui ) {
+					if(confirm('¿Quieres borrar esta pregunta?')) {
+						window.open('/quizzes/' + ui.draggable.prop('id') + '?_method=DELETE', '_self');
+					}
+				}
+			});		
+		});
+	</script>	
 </head>
 <body>
 	<nav>
