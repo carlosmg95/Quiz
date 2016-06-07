@@ -3,7 +3,12 @@
 <div class="usuario">
 	<p><b>Username:</b> <%= user.username %></p>
 	<p><b>Es administrador:</b> <%= user.isAdmin ? 'Sí' : 'No' %></p>
-
+	<p><b>Comentarios:</b></p>
+	<ul>
+		<% for(var i in comentarios) { %>
+			<li><%= comentarios[i].text %></li>
+		<% } %>
+	</ul>
 
 	<% if(session.user) { %>
 		<p>
