@@ -3,3 +3,4 @@ npm-debug.log
 .env
 quiz.sqlite
 uploads
+package-lock.json
